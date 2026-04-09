@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Click to Destroy Stress</title>
+    <meta
+      name="description"
+      content="Stress beruvchi so'zlarni bosib yo'q qiling va o'zingizni yengil his qiling."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="noise"></div>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-badge">Mini antistress tajriba</div>
+        <button
+          class="sound-toggle"
+          id="soundToggle"
+          type="button"
+          aria-pressed="true"
+        >
+          Ovoz: Yoqilgan
+        </button>
+      </header>
+
+      <section class="stage-shell" aria-label="Click to Destroy Stress sahnasi">
+        <div class="stage-frame"></div>
+        <div class="screen-stage" id="screenStage">
+          <section class="screen welcome-screen" id="welcomeScreen">
+            <div class="hero-card">
+              <p class="eyebrow">Click to Destroy Stress</p>
+              <h1>Stressni bitta-bitta yo‘q qiling</h1>
+              <p class="hero-copy">
+                Imtihon, deadline va bosimlarni bir necha soniyada bosib tashlang.
+                Har click kichik yengillik olib keladi.
+              </p>
+
+              <div class="hero-actions">
+                <button class="primary-button cta-button" id="startButton" type="button">
+                  Boshlash
+                </button>
+                <p class="helper-text">10 ta so‘z. 1 ekran. Darhol yengillik.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="screen game-screen" id="gameScreen" hidden>
+            <div class="game-panel">
+              <div class="status-block">
+                <p class="status-label">Yo‘q qilindi</p>
+                <p class="status-value" id="progressText">0 / 10</p>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="status-block status-block-right">
+                <p class="status-label">Qoldi</p>
+                <p class="status-value" id="remainingText">10</p>
+              </div>
+              <button class="ghost-button" id="restartButton" type="button">
+                Qayta boshlash
+              </button>
+            </div>
+
+            <div
+              class="playfield"
+              id="playfield"
+              tabindex="-1"
+              aria-live="polite"
+              aria-label="Stress so‘zlari maydoni"
+            ></div>
+          </section>
+
+          <section class="screen finish-screen" id="finishScreen" hidden>
+            <div class="finish-glow" id="finishGlow" aria-hidden="true"></div>
+            <div class="hero-card finish-card">
+              <p class="eyebrow">Barcha stresslar yo‘q qilindi</p>
+              <h2 id="finalHeading" tabindex="-1">Siz kuchlisiz.</h2>
+              <p class="hero-copy" id="finalCopy">
+                Bugungi stresslarni bir oz bo‘lsa ham yengdingiz.
+              </p>
+              <p class="result-summary" id="finalSummary">Yo‘q qilindi: 10 / 10</p>
+              <button class="primary-button" id="replayButton" type="button">
+                Yana o‘ynash
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
