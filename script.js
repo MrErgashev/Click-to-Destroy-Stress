@@ -1,14 +1,74 @@
 const STRESS_WORDS = [
-  "Stress",
-  "Deadline",
-  "Imtihon",
-  "Qarzdorlik",
-  "Uyqu yetishmasligi",
-  "Prezentatsiya",
-  "Vazifa",
-  "Qo‘rquv",
-  "Bosim",
-  "Charchoq",
+  {
+    label: "Stress",
+    meaning: "Ichki zo‘riqish holati: miya xavfni kattalashtirib talqin qiladi.",
+    body: "Yurak urishi va mushak tarangligi oshadi.",
+    action: "4-6 nafas sikli: 4 soniya olib, 6 soniya chiqarish.",
+    visual: "🧠⚡",
+  },
+  {
+    label: "Deadline",
+    meaning: "Vaqt bosimi tufayli ongda shoshilish va xato qo‘rquvi kuchayadi.",
+    body: "Fikrlar tarqaladi, diqqatingiz bo‘linadi.",
+    action: "Ishni 25 daqiqalik sprint va 5 daqiqalik tanaffusga bo‘ling.",
+    visual: "⏱️🔥",
+  },
+  {
+    label: "Imtihon",
+    meaning: "Natija uchun yuqori mas’uliyat hissi o‘zini tekshirishga aylanishi mumkin.",
+    body: "Qo‘l sovishi, qorin bezovtaligi kuzatiladi.",
+    action: "3 ta ehtimoliy savolga qisqa javob yozib, miyani isitib oling.",
+    visual: "📝🌩️",
+  },
+  {
+    label: "Qarzdorlik",
+    meaning: "Noaniqlik va nazorat yo‘qligi hissi ruhiy bosimni oshiradi.",
+    body: "Uyqu sifati pasayadi, fon tashvish kuchayadi.",
+    action: "Qarzlarni A/B/C ustuvorlikka ajratib, eng kichigidan boshlang.",
+    visual: "💸🧱",
+  },
+  {
+    label: "Uyqu yetishmasligi",
+    meaning: "Miya tiklanmasligi sabab emotsiya boshqaruvi susayadi.",
+    body: "Asabiylik va xotira pasayishi seziladi.",
+    action: "Bugun faqat 30 daqiqa erta yotish maqsadini qo‘ying.",
+    visual: "🌙🫩",
+  },
+  {
+    label: "Prezentatsiya",
+    meaning: "Baholanish qo‘rquvi o‘zini himoya rejimini yoqadi.",
+    body: "Ovoz titrashi, kaft terlashi tabiiy holat.",
+    action: "2 daqiqalik ovozli mashq: bir gapni 5 marta aniq ayting.",
+    visual: "🎤💥",
+  },
+  {
+    label: "Vazifa",
+    meaning: "Yirik topshiriq miyaga ‘juda ko‘p’ signalini beradi.",
+    body: "Prokrastinatsiya boshlanadi, energiya tushadi.",
+    action: "Vazifani 1 ta keyingi amaliy qadamga maydalang.",
+    visual: "📌🧩",
+  },
+  {
+    label: "Qo‘rquv",
+    meaning: "Mumkin bo‘lgan salbiy natijani ong ortiqcha realdek qabul qiladi.",
+    body: "Nafas qisqa bo‘ladi, ko‘krak siqiladi.",
+    action: "‘Eng yomon / eng yaxshi / eng real’ ssenariyni yozing.",
+    visual: "😨🫁",
+  },
+  {
+    label: "Bosim",
+    meaning: "Kutilmalar va o‘z-o‘ziga talablar o‘rtasidagi keskinlik.",
+    body: "Yelka va bo‘yinda qotishish paydo bo‘ladi.",
+    action: "Bo‘yin-yelka uchun 60 soniyalik cho‘zilish qiling.",
+    visual: "🧱😮‍💨",
+  },
+  {
+    label: "Charchoq",
+    meaning: "Resurs kamayganda oddiy vazifalar ham og‘ir ko‘rinadi.",
+    body: "Diqqat pasayadi, xatolar ko‘payadi.",
+    action: "90 soniya ko‘zlarni yumib, 10 marta chuqur nafas oling.",
+    visual: "🔋⬇️",
+  },
 ];
 
 const FINAL_MESSAGE = {
@@ -45,6 +105,11 @@ const elements = {
   finalCopy: document.getElementById("finalCopy"),
   finalSummary: document.getElementById("finalSummary"),
   finishGlow: document.getElementById("finishGlow"),
+  insightWord: document.getElementById("insightWord"),
+  insightMeaning: document.getElementById("insightMeaning"),
+  insightBody: document.getElementById("insightBody"),
+  insightAction: document.getElementById("insightAction"),
+  insightVisual: document.getElementById("insightVisual"),
 };
 
 const screens = {
@@ -169,9 +234,13 @@ function setInitialScreen(screenName) {
 
 function resetGameData() {
   state.destroyedCount = 0;
-  state.words = STRESS_WORDS.map((label, index) => ({
+  state.words = STRESS_WORDS.map((item, index) => ({
     id: `word-${index + 1}`,
-    label,
+    label: item.label,
+    meaning: item.meaning,
+    body: item.body,
+    action: item.action,
+    visual: item.visual,
     x: 0,
     y: 0,
     scale: WORD_SCALES[index % WORD_SCALES.length],
@@ -257,6 +326,7 @@ async function setScreen(nextScreen) {
 function renderScreenContents(screenName) {
   if (screenName === "playing") {
     clearTransientEffects();
+    updateInsight(STRESS_WORDS[0]);
     updateProgress();
     return;
   }
@@ -377,6 +447,8 @@ function renderWords() {
     button.style.setProperty("--drift-y", word.driftY);
     button.style.setProperty("--float-duration", word.floatDuration);
     button.setAttribute("aria-label", `${word.label} so‘zini yo‘q qilish`);
+    button.addEventListener("mouseenter", () => updateInsight(word));
+    button.addEventListener("focus", () => updateInsight(word));
     button.addEventListener("click", (event) => destroyWord(word.id, event));
     fragment.appendChild(button);
   });
@@ -510,6 +582,23 @@ function destroyWord(wordId, event) {
   chip.classList.add("is-destroying");
   soundEngine.playDestroy();
   animateDestroy(chip, event, state.destroyedCount === state.totalCount);
+
+  const nextWord = state.words.find((item) => !item.destroyed);
+  if (nextWord) {
+    updateInsight(nextWord);
+  }
+}
+
+function updateInsight(word) {
+  if (!word || !elements.insightWord) {
+    return;
+  }
+
+  elements.insightWord.textContent = word.label;
+  elements.insightMeaning.textContent = `Ma'nosi: ${word.meaning}`;
+  elements.insightBody.textContent = `Tana signali: ${word.body}`;
+  elements.insightAction.textContent = `Mikro-yechim: ${word.action}`;
+  elements.insightVisual.textContent = word.visual;
 }
 
 function animateDestroy(chip, event, isLastWord) {

@@ -73,13 +73,30 @@
               </button>
             </div>
 
-            <div
-              class="playfield"
-              id="playfield"
-              tabindex="-1"
-              aria-live="polite"
-              aria-label="Stress so‘zlari maydoni"
-            ></div>
+            <div class="game-layout">
+              <div
+                class="playfield"
+                id="playfield"
+                tabindex="-1"
+                aria-live="polite"
+                aria-label="Stress so‘zlari maydoni"
+              ></div>
+
+              <aside class="insight-panel" id="insightPanel" aria-live="polite">
+                <p class="insight-kicker">So‘zni tushunish rejimi</p>
+                <h3 id="insightWord">Stress</h3>
+                <p class="insight-meaning" id="insightMeaning">
+                  Ichki zo‘riqish holati: miya xavfni kuchaytirib ko‘rsatadi.
+                </p>
+                <div class="insight-visual" id="insightVisual" aria-hidden="true">🧠⚡</div>
+                <p class="insight-body" id="insightBody">
+                  Tana signali: yurak urishi tezlashadi, nafas qisqaradi.
+                </p>
+                <p class="insight-action" id="insightAction">
+                  Mikro-yechim: 4 soniya nafas olib, 6 soniya chiqarib ko‘ring.
+                </p>
+              </aside>
+            </div>
           </section>
 
           <section class="screen finish-screen" id="finishScreen" hidden>

@@ -310,6 +310,13 @@ button {
   height: 100%;
 }
 
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  min-height: 0;
+}
+
 .game-panel {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, auto)) minmax(140px, 1fr) auto;
@@ -375,6 +382,51 @@ button {
     linear-gradient(180deg, rgba(8, 15, 31, 0.86), rgba(6, 11, 23, 0.98));
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
+}
+
+.insight-panel {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(16, 24, 48, 0.88), rgba(10, 16, 33, 0.94));
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.insight-kicker {
+  margin: 0;
+  color: var(--cyan);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.insight-panel h3 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+
+.insight-meaning,
+.insight-body,
+.insight-action {
+  margin: 10px 0 0;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.insight-visual {
+  margin-top: 14px;
+  min-height: 72px;
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  border: 1px solid var(--line-strong);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 95, 178, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(77, 226, 255, 0.24), transparent 42%),
+    rgba(255, 255, 255, 0.04);
 }
 
 .playfield::before,
@@ -680,6 +732,14 @@ button {
 
   .ghost-button {
     justify-self: start;
+  }
+
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .insight-panel {
+    padding: 16px;
   }
 }
 
